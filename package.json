@@ -1,0 +1,77 @@
+{
+  "name": "@ninjaai/stimulus_sheet",
+  "version": "0.1.0",
+  "description": "HTML-first bottom-sheet / action-sheet for Stimulus.js (Hotwire). iOS-style half/full snap, drag-to-dismiss, portal-to-body, Hotwire-Native bridge — built to survive Turbo navigations and TurboNative WKWebView without crashing.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Marcus Schappi",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/schappim/stimulus_sheet#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schappim/stimulus_sheet.git"
+  },
+  "bugs": {
+    "url": "https://github.com/schappim/stimulus_sheet/issues"
+  },
+  "keywords": [
+    "stimulus",
+    "hotwire",
+    "turbo",
+    "turbo-native",
+    "hotwire-native",
+    "action-sheet",
+    "bottom-sheet",
+    "modal",
+    "drawer",
+    "ios"
+  ],
+  "main": "dist/stimulus_sheet.esm.js",
+  "module": "dist/stimulus_sheet.esm.js",
+  "unpkg": "dist/stimulus_sheet.js",
+  "jsdelivr": "dist/stimulus_sheet.js",
+  "exports": {
+    ".": {
+      "import": "./dist/stimulus_sheet.esm.js",
+      "default": "./dist/stimulus_sheet.esm.js"
+    },
+    "./style.css": "./dist/stimulus_sheet.css",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "RAILS.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "FORMAT=iife vite build --config vite.lib.config.js && FORMAT=es vite build --config vite.lib.config.js && npm run vendor:gem",
+    "build:lib:iife": "FORMAT=iife vite build --config vite.lib.config.js",
+    "build:lib:esm": "FORMAT=es vite build --config vite.lib.config.js",
+    "build:lib:watch": "FORMAT=iife vite build --config vite.lib.config.js --watch",
+    "vendor:gem": "bin/sync-rails-assets",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "prepublishOnly": "npm run build:lib && npm test"
+  },
+  "peerDependencies": {
+    "@hotwired/stimulus": "^3.2.2"
+  },
+  "devDependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@playwright/test": "^1.60.0",
+    "jsdom": "^25.0.1",
+    "vite": "^6.4.2",
+    "vitest": "^3.2.4"
+  }
+}

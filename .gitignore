@@ -1,0 +1,12 @@
+node_modules/
+dist-demos/
+.DS_Store
+*.log
+.vite/
+.cache/
+coverage/
+.env
+.env.local
+
+# Local Rails scaffold lives outside the repo
+gem/demo/
