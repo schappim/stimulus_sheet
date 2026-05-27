@@ -16,8 +16,10 @@ test.describe('08 — non-dismissable', () => {
     await page.waitForTimeout(100);
     expect(await page.evaluate(() => StimulusSheet.isOpen('ndSheet'))).toBe(true);
 
-    // An explicit Confirm row DOES close it.
-    await page.getByRole('button', { name: 'Confirm' }).click();
+    // An explicit Confirm row DOES close it. exact=true so we don't
+    // also match the "Open required-confirm" trigger button by
+    // substring.
+    await page.getByRole('button', { name: 'Confirm', exact: true }).click();
     await expect.poll(() => page.evaluate(() => StimulusSheet.isOpen('ndSheet'))).toBe(false);
   });
 });

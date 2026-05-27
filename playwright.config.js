@@ -17,10 +17,18 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: true,
+  // fullyParallel is OFF — tests within one spec file share a worker
+  // and run serially. macOS's system WebKit starves under too many
+  // concurrent processes (the dev server's first-load compile races
+  // multi-worker page boots and the page can't import
+  // dist/stimulus_sheet.js in time). Across files we still parallelise
+  // via `workers`.
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // 2 workers is enough to see real parallelism without overwhelming
+  // local WebKit. CI Linux runners are happy with 1.
+  workers: process.env.CI ? 1 : 2,
   reporter: process.env.CI ? [['list'], ['github']] : 'list',
   use: {
     baseURL: 'http://localhost:5179',
