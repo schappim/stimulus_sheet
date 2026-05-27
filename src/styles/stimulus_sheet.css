@@ -1,0 +1,162 @@
+/* stimulus_sheet — default theme.
+ *
+ * One stylesheet, themable via CSS custom properties on the wrapper
+ * (.ss-sheet-wrapper). The library never writes inline colours/widths;
+ * tweak the variables on your wrapper, or on :root, to restyle.
+ *
+ * Notable WKWebView / TurboNative considerations are inline. */
+
+.ss-sheet-wrapper {
+  --ss-bg: #ffffff;
+  --ss-fg: #1a1a1a;
+  --ss-fg-muted: #737373;
+  --ss-divider: #ececec;
+  --ss-handle-bg: #d0d0d0;
+  --ss-backdrop: rgba(0, 0, 0, 0.35);
+  --ss-radius: 16px;
+  --ss-z-backdrop: 100001;
+  --ss-z-sheet: 100002;
+  --ss-shadow: 0 -4px 30px rgba(0, 0, 0, 0.12);
+  --ss-transition: transform .35s cubic-bezier(.32,.72,0,1);
+  --ss-padding-x: 20px;
+  --ss-section-gap: 6px;
+  --ss-row-padding: 13px;
+  --ss-row-font-size: 15px;
+  --ss-handle-w: 36px;
+  --ss-handle-h: 4px;
+
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--ss-fg);
+}
+
+/* ── backdrop ──────────────────────────────────────────────────────── */
+
+.ss-sheet-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: var(--ss-z-backdrop);
+  transition: background .3s ease;
+  pointer-events: none;
+}
+.ss-sheet-backdrop-visible {
+  background: var(--ss-backdrop);
+  pointer-events: auto;
+}
+
+/* ── the sheet itself ──────────────────────────────────────────────── */
+
+.ss-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  background: var(--ss-bg);
+  border-radius: var(--ss-radius) var(--ss-radius) 0 0;
+  z-index: var(--ss-z-sheet);
+  /* Start parked off-screen. The controller overrides visibility on
+     open and re-hides it after the close transition completes. */
+  transform: translateY(calc(100% + 40px));
+  transition: var(--ss-transition);
+  /* 60px of breathing room above the sheet's top edge plus the
+     env(safe-area-inset-top) bar so the handle/title clear the iOS
+     status bar in full mode. */
+  height: calc(100vh - env(safe-area-inset-top, 54px) - 60px);
+  display: flex; flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  visibility: hidden;
+  /* `touch-action: none` on the sheet body would block content scroll;
+     scope it to the drag handle instead (below) so the rest of the
+     sheet keeps native scrolling. */
+}
+
+.ss-sheet-full,
+.ss-sheet-half {
+  box-shadow: var(--ss-shadow);
+}
+.ss-sheet-half { transform: translateY(55%); }
+.ss-sheet-half .ss-sheet-scroll { overflow: hidden; }
+.ss-sheet-full { transform: translateY(0); }
+.ss-sheet-full .ss-sheet-scroll { overflow-y: auto; overscroll-behavior: contain; }
+
+/* ── drag handle ──────────────────────────────────────────────────── */
+
+.ss-sheet-handle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 4px;
+  cursor: grab;
+  flex-shrink: 0;
+  /* Disable browser-side gestures (text selection, scroll) on the
+     handle so pointer-event drag is unambiguous. */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ss-sheet-handle::before {
+  content: '';
+  display: block;
+  width: var(--ss-handle-w);
+  height: var(--ss-handle-h);
+  border-radius: 999px;
+  background: var(--ss-handle-bg);
+}
+
+/* ── content region ──────────────────────────────────────────────── */
+
+.ss-sheet-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--ss-padding-x) 20px;
+  /* iOS smooth scrolling */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── action-list helpers ──────────────────────────────────────────── */
+
+.ss-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 12px 0 var(--ss-section-gap);
+  color: var(--ss-fg);
+}
+
+.ss-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: var(--ss-row-padding) 0;
+  cursor: pointer;
+  font-size: var(--ss-row-font-size);
+  color: var(--ss-fg);
+  background: transparent;
+  border: 0;
+  width: 100%;
+  text-align: left;
+}
+.ss-item:active { opacity: 0.5; }
+.ss-item svg {
+  width: 22px; height: 22px;
+  stroke: currentColor; fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.ss-item.ss-item-disabled,
+.ss-item:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+.ss-item-destructive {
+  color: #e53935;
+}
+.ss-item-destructive svg { stroke: #e53935; }
+
+/* ── body marker ──────────────────────────────────────────────────────
+   Toggled by the controller — host CSS can react to "any sheet open"
+   without using `body:has(.ss-sheet.ss-sheet-full)` which is known to
+   crash WebKit/WKWebView under deep DOM. */
+body.ss-sheet-open {
+  /* Hosts can extend this rule (e.g. dim the bottom nav). The library
+     itself does not impose any visual effect — it just toggles the
+     class. */
+}
