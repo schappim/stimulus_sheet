@@ -8,6 +8,12 @@ An **HTML-first bottom-sheet / action-sheet for [Stimulus.js](https://stimulus.h
 
 iOS-style half/full snap. Drag-to-dismiss. Portal-to-body so the sheet escapes a Turbo frame's stacking context. Optional Hotwire-Native bridge so a tap on a trigger opens a real native sheet on iOS / Android — and falls back to the web sheet on a browser. **Built to survive Turbo navigations and TurboNative WKWebView without crashing the web view.**
 
+<p align="center">
+  <img src="docs/screenshots/01-basic-open.png" alt="A bottom sheet open in half mode over a phone-shaped viewport" width="320" />
+  &nbsp;
+  <img src="docs/screenshots/03-action-list.png" alt="A sectioned iOS-style action sheet with icon rows" width="320" />
+</p>
+
 ## What you get
 
 - **iOS-style bottom sheet** — half and full snap states, rounded top corners, safe-area aware, drag handle.
@@ -93,6 +99,16 @@ Full setup (importmap, stylesheet, view helpers) is in [`RAILS.md`](RAILS.md).
 ```
 
 That's it. The sheet opens in half mode, drags up to full, drags down (or tap-backdrop) to close. Try the [`demo/`](demo) directory for portaling, multi-sheet, forms, events, and the Hotwire-Native bridge.
+
+### Half vs full
+
+The sheet has two snap states. Half is the default — content scrolls inside the sheet, the host page is still partially visible. Full takes the whole viewport (minus the safe-area inset at the top).
+
+<p align="center">
+  <img src="docs/screenshots/02-half-snap.png" alt="Sheet snapped to half" width="320" />
+  &nbsp;
+  <img src="docs/screenshots/02-full-snap.png" alt="Sheet snapped to full" width="320" />
+</p>
 
 ---
 
@@ -220,6 +236,27 @@ Override on a specific wrapper for a one-off look, or on `:root` for a global re
 
 - `npm test` — vitest (registry, portal, controller wiring) in jsdom.
 - `npm run test:e2e` — Playwright in WebKit + Chromium against the live demo pages. Closest analogue to the iOS WKWebView this library targets.
+
+## Demo gallery
+
+Captured from the demo pages in WebKit at a 2× retina iPhone viewport, so what you see is what an iOS / Hotwire-Native shell renders.
+
+| Demo | Screenshot |
+| --- | --- |
+| **01 — Basic sheet** ([demo](demo/01-basic.html)) — single sheet, opens half, backdrop tap to close. | <img src="docs/screenshots/01-basic-open.png" alt="01 basic open" width="260" /> |
+| **02 — Half &amp; full** ([demo](demo/02-half-and-full.html)) — two triggers for one sheet, one opens half, the other goes full. | <img src="docs/screenshots/02-full-snap.png" alt="02 full snap" width="260" /> |
+| **03 — Action list** ([demo](demo/03-action-list.html)) — sectioned `.ss-section-title` + `.ss-item` rows. | <img src="docs/screenshots/03-action-list.png" alt="03 action list" width="260" /> |
+| **04 — Multiple sheets** ([demo](demo/04-multiple-sheets.html)) — two independent sheets keyed by id. | <img src="docs/screenshots/04-multiple-sheets.png" alt="04 multiple sheets" width="260" /> |
+| **06 — Portal to body** ([demo](demo/06-portaled-from-frame.html)) — sheet rendered inside a transformed frame, lifted to `<body>` on connect. | <img src="docs/screenshots/06-portal.png" alt="06 portaled" width="260" /> |
+| **08 — Non-dismissable** ([demo](demo/08-non-dismissable.html)) — backdrop has no `#close` action; explicit confirm/cancel required. | <img src="docs/screenshots/08-non-dismissable.png" alt="08 non-dismissable" width="260" /> |
+| **09 — Form in a sheet** ([demo](demo/09-form-in-sheet.html)) — submit-to-close, Cancel row. | <img src="docs/screenshots/09-form-in-sheet.png" alt="09 form in sheet" width="260" /> |
+
+Regenerate after editing a demo:
+
+```bash
+npm run dev                            # in one terminal
+node scripts/screenshot-demos.mjs      # in another
+```
 
 ## Repo layout
 
