@@ -1,0 +1,37 @@
+<%# Reusable bottom-sheet shell. Renders the .ss-sheet markup with
+    backdrop, handle, scroll region, and dismissal wiring. Pair with
+    `render_sheet_trigger` (or wire a `data-controller="sheet-trigger"`
+    button by hand) to open it.
+
+    Locals:
+      sheet_id          (required)  - id used by sheet-trigger lookups
+      sheet_title                   - string shown above the content
+      sheet_portal       (false)    - true to portal the wrapper to <body>
+      initial_expanded   (false)    - true → first open snaps to full
+      dismissable        (true)     - false → backdrop click does NOT close
+      body               (required) - already-captured HTML (see Helper) %>
+<%
+  sheet_id         = local_assigns.fetch(:sheet_id)
+  sheet_title      = local_assigns[:sheet_title]
+  sheet_portal     = !!local_assigns[:sheet_portal]
+  initial_expanded = !!local_assigns[:initial_expanded]
+  dismissable      = local_assigns.fetch(:dismissable, true)
+  body             = local_assigns.fetch(:body)
+%>
+<div data-controller="sheet"
+     data-sheet-id-value="<%= sheet_id %>"
+     <% if sheet_portal %>data-sheet-portal-value="true"<% end %>
+     <% if initial_expanded %>data-sheet-initial-expanded-value="true"<% end %>>
+  <div class="ss-sheet-backdrop"
+       data-sheet-target="backdrop"
+       <% if dismissable %>data-action="click->sheet#close"<% end %>></div>
+  <div class="ss-sheet" data-sheet-target="sheet">
+    <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+    <div class="ss-sheet-scroll" data-sheet-target="scroll">
+      <% if sheet_title.present? %>
+        <div class="ss-section-title"><%= sheet_title %></div>
+      <% end %>
+      <%= body.html_safe %>
+    </div>
+  </div>
+</div>

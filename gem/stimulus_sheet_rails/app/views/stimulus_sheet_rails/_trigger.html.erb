@@ -1,0 +1,25 @@
+<%# Default trigger button. Wires up the `sheet-trigger` Stimulus
+    controller so callers don't have to spell out the data attributes
+    every time.
+
+    Locals:
+      sheet_id     (required) - id of the sheet to open
+      expanded                - true → open in full state (default half)
+      extra_class             - merged into the button's class attribute
+      body                    - captured block (button label / icon) %>
+<%
+  sheet_id    = local_assigns.fetch(:sheet_id)
+  expanded    = !!local_assigns[:expanded]
+  extra_class = local_assigns[:extra_class]
+  body        = local_assigns.fetch(:body)
+  base_class  = "ss-trigger-default"
+  klass       = [base_class, extra_class].compact.join(" ")
+%>
+<button type="button"
+        class="<%= klass %>"
+        data-controller="sheet-trigger"
+        data-sheet-trigger-id-value="<%= sheet_id %>"
+        <% if expanded %>data-sheet-trigger-expanded-value="true"<% end %>
+        data-action="click->sheet-trigger#open">
+  <%= body.html_safe %>
+</button>
