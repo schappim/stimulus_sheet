@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>01 — Basic sheet | stimulus_sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="../dist/stimulus_sheet.css" />
+  <link rel="stylesheet" href="_shared.css" />
+</head>
+<body class="phone">
+  <p class="crumbs"><a href="./">← demos</a></p>
+  <h1>01 — Basic sheet</h1>
+  <p class="lede">A single sheet, opened from a trigger button. Tap the backdrop or the dismiss row to close.</p>
+
+  <div class="row">
+    <button class="demo-btn"
+            data-controller="sheet-trigger"
+            data-sheet-trigger-id-value="basicSheet"
+            data-action="click->sheet-trigger#open">
+      Open sheet
+    </button>
+  </div>
+
+  <p class="tip">The sheet opens in <em>half</em> mode. Drag the handle up for full, drag down (or flick) to close.</p>
+
+  <!-- The sheet itself. The wrapper is the controller element; the
+       backdrop + body are targets. The wrapper stays in normal DOM
+       flow because we haven't enabled portal-to-body here (see 06). -->
+  <div data-controller="sheet" data-sheet-id-value="basicSheet">
+    <div class="ss-sheet-backdrop"
+         data-sheet-target="backdrop"
+         data-action="click->sheet#close"></div>
+    <div class="ss-sheet" data-sheet-target="sheet">
+      <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+      <div class="ss-sheet-scroll" data-sheet-target="scroll">
+        <div class="ss-section-title">Basic sheet</div>
+        <button type="button" class="ss-item" data-action="click->sheet#close">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+          Dismiss
+        </button>
+        <button type="button" class="ss-item" data-action="click->sheet#expand">
+          <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15" /></svg>
+          Snap to full
+        </button>
+        <button type="button" class="ss-item" data-action="click->sheet#half">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" /></svg>
+          Snap to half
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/stimulus_sheet.js"></script>
+  <script>StimulusSheet.start();</script>
+</body>
+</html>

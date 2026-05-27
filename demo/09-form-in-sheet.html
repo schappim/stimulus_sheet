@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>09 — Form in a sheet | stimulus_sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="../dist/stimulus_sheet.css" />
+  <link rel="stylesheet" href="_shared.css" />
+  <style>
+    .form-grid { display: grid; gap: 10px; margin-top: 8px; }
+    .form-grid label { display: grid; gap: 4px; font-size: 13px; color: #6b7280; }
+    .form-grid input, .form-grid textarea {
+      font: inherit; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px;
+    }
+    .form-grid textarea { resize: vertical; min-height: 80px; }
+    .actions {
+      display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px;
+    }
+  </style>
+</head>
+<body class="phone">
+  <p class="crumbs"><a href="./">← demos</a></p>
+  <h1>09 — Form in a sheet</h1>
+  <p class="lede">A sheet containing a form. Submit closes the sheet.</p>
+
+  <div class="row">
+    <button class="demo-btn"
+            data-controller="sheet-trigger"
+            data-sheet-trigger-id-value="formSheet"
+            data-sheet-trigger-expanded-value="true"
+            data-action="click->sheet-trigger#open">
+      New note
+    </button>
+  </div>
+
+  <pre class="log" id="log"></pre>
+
+  <div data-controller="sheet" data-sheet-id-value="formSheet">
+    <div class="ss-sheet-backdrop" data-sheet-target="backdrop" data-action="click->sheet#close"></div>
+    <div class="ss-sheet" data-sheet-target="sheet">
+      <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+      <div class="ss-sheet-scroll" data-sheet-target="scroll">
+        <div class="ss-section-title">New note</div>
+        <form id="noteForm" data-action="submit->sheet#close" autocomplete="off">
+          <div class="form-grid">
+            <label>Title <input name="title" required /></label>
+            <label>Body <textarea name="body"></textarea></label>
+          </div>
+          <div class="actions">
+            <button type="button" class="demo-btn secondary" data-action="click->sheet#close">Cancel</button>
+            <button type="submit" class="demo-btn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/stimulus_sheet.js"></script>
+  <script>
+    StimulusSheet.start();
+    const log = document.getElementById('log');
+    document.getElementById('noteForm').addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const fd = new FormData(ev.target);
+      const data = Object.fromEntries(fd.entries());
+      log.textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>

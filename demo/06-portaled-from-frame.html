@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>06 — Portal to body | stimulus_sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="../dist/stimulus_sheet.css" />
+  <link rel="stylesheet" href="_shared.css" />
+  <style>
+    /* A transformed ancestor traps `position: fixed` descendants
+       inside its stacking context — the typical Turbo "mobile-screen"
+       wrapper is exactly this. Without portaling, the sheet would
+       sit inside this frame instead of over the viewport. */
+    .screen-frame {
+      position: relative;
+      transform: translateX(0);
+      isolation: isolate;
+      border: 1px dashed #cbd5e1;
+      padding: 16px;
+      border-radius: 12px;
+      margin: 14px 0;
+    }
+  </style>
+</head>
+<body class="phone">
+  <p class="crumbs"><a href="./">← demos</a></p>
+  <h1>06 — Portal to body</h1>
+  <p class="lede">
+    The sheet markup is rendered inside a transformed wrapper (mimicking
+    a Turbo mobile-screen frame). <code>data-sheet-portal-value="true"</code>
+    lifts the wrapper to <code>&lt;body&gt;</code> on connect so its
+    <code>position: fixed</code> escapes the frame's stacking context.
+  </p>
+
+  <div class="screen-frame">
+    <p style="color:#6b7280;margin:0 0 12px">This dashed box is a transformed ancestor.</p>
+    <button class="demo-btn"
+            data-controller="sheet-trigger"
+            data-sheet-trigger-id-value="portalSheet"
+            data-action="click->sheet-trigger#open">
+      Open from inside a frame
+    </button>
+
+    <div data-controller="sheet"
+         data-sheet-id-value="portalSheet"
+         data-sheet-portal-value="true">
+      <div class="ss-sheet-backdrop" data-sheet-target="backdrop" data-action="click->sheet#close"></div>
+      <div class="ss-sheet" data-sheet-target="sheet">
+        <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+        <div class="ss-sheet-scroll" data-sheet-target="scroll">
+          <div class="ss-section-title">Portaled sheet</div>
+          <p style="color:#6b7280">
+            Inspect the DOM — the wrapper has moved out of the dashed
+            frame and now sits as a direct child of <code>&lt;body&gt;</code>.
+            On Stimulus disconnect, it removes itself again.
+          </p>
+          <button type="button" class="ss-item" data-action="click->sheet#close">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/stimulus_sheet.js"></script>
+  <script>StimulusSheet.start();</script>
+</body>
+</html>

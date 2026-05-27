@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>stimulus_sheet · demos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="_shared.css" />
+  <style>
+    ol { padding-left: 22px; }
+    li { margin: 6px 0; }
+    li a { color: #2563eb; text-decoration: none; }
+    li a:hover { text-decoration: underline; }
+    li small { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <h1>stimulus_sheet · demos</h1>
+  <p class="lede">
+    HTML-first bottom-sheet for Stimulus.js. iOS-style half/full snap,
+    drag-to-dismiss, portal-to-body, Hotwire-Native bridge. Built to
+    survive Turbo navigations and TurboNative WKWebView.
+  </p>
+
+  <ol>
+    <li><a href="01-basic.html">01 — Basic sheet</a><br><small>Single sheet, open from a trigger, click backdrop to close.</small></li>
+    <li><a href="02-half-and-full.html">02 — Half &amp; full</a><br><small>Open half by default, drag up (or tap) to expand to full.</small></li>
+    <li><a href="03-action-list.html">03 — Action list</a><br><small>Sectioned <code>.ss-section-title</code> + <code>.ss-item</code> rows.</small></li>
+    <li><a href="04-multiple-sheets.html">04 — Multiple sheets</a><br><small>Two independent sheets, opened by id.</small></li>
+    <li><a href="05-imperative-api.html">05 — Imperative API</a><br><small><code>StimulusSheet.open(id)</code> / <code>close</code> / <code>toggle</code> from arbitrary JS.</small></li>
+    <li><a href="06-portaled-from-frame.html">06 — Portal to body</a><br><small>Sheet inside a transformed container, portaled out so it sits above its host.</small></li>
+    <li><a href="07-events-log.html">07 — Events log</a><br><small>Watch <code>sheet:opened</code> / <code>sheet:closed</code> / <code>sheet:snap</code>.</small></li>
+    <li><a href="08-non-dismissable.html">08 — Non-dismissable</a><br><small>Backdrop click ignored — sheet only closes via an explicit action.</small></li>
+    <li><a href="09-form-in-sheet.html">09 — Form in a sheet</a><br><small>Submit a form, close on submit.</small></li>
+    <li><a href="10-hotwire-native-bridge.html">10 — Hotwire-Native bridge</a><br><small>Native action sheet on a TurboNative shell; falls back to web on a browser.</small></li>
+  </ol>
+
+  <p class="tip">
+    Run with <code>npm run dev</code>. Each demo loads the IIFE bundle
+    from <code>../dist/</code> so make sure you've run
+    <code>npm run build:lib</code> at least once.
+  </p>
+</body>
+</html>

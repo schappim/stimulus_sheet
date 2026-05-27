@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>02 — Half &amp; full | stimulus_sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="../dist/stimulus_sheet.css" />
+  <link rel="stylesheet" href="_shared.css" />
+</head>
+<body class="phone">
+  <p class="crumbs"><a href="./">← demos</a></p>
+  <h1>02 — Half &amp; full</h1>
+  <p class="lede">
+    Two triggers for the same sheet. One opens in <em>half</em> mode (default), the other jumps straight to <em>full</em>.
+  </p>
+
+  <div class="row">
+    <button class="demo-btn"
+            data-controller="sheet-trigger"
+            data-sheet-trigger-id-value="hfSheet"
+            data-action="click->sheet-trigger#open">
+      Open (half)
+    </button>
+    <button class="demo-btn secondary"
+            data-controller="sheet-trigger"
+            data-sheet-trigger-id-value="hfSheet"
+            data-sheet-trigger-expanded-value="true"
+            data-action="click->sheet-trigger#open">
+      Open (full)
+    </button>
+  </div>
+
+  <p class="tip">From either mode, drag up / down on the handle to snap between half, full, and closed.</p>
+
+  <div data-controller="sheet" data-sheet-id-value="hfSheet">
+    <div class="ss-sheet-backdrop" data-sheet-target="backdrop" data-action="click->sheet#close"></div>
+    <div class="ss-sheet" data-sheet-target="sheet">
+      <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+      <div class="ss-sheet-scroll" data-sheet-target="scroll">
+        <div class="ss-section-title">Half &amp; full</div>
+        <div style="line-height:1.5;color:#6b7280">
+          <p>The handle uses pointer events under the hood, so the same drag
+          gesture works for mouse, touch, and stylus. Below the threshold of
+          6px the gesture is treated as a tap so row click handlers still fire.</p>
+          <p>A fast flick down closes the sheet, regardless of where the gesture
+          finishes. A fast flick up always expands.</p>
+        </div>
+        <button type="button" class="ss-item ss-item-destructive" data-action="click->sheet#close">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/stimulus_sheet.js"></script>
+  <script>StimulusSheet.start();</script>
+</body>
+</html>

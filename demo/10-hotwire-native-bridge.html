@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>10 — Hotwire-Native bridge | stimulus_sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="../dist/stimulus_sheet.css" />
+  <link rel="stylesheet" href="_shared.css" />
+</head>
+<body class="phone">
+  <p class="crumbs"><a href="./">← demos</a></p>
+  <h1>10 — Hotwire-Native bridge</h1>
+  <p class="lede">
+    The bridge controller asks the native shell to render a real
+    <code>UIActionSheet</code> / Android <code>BottomSheet</code>. In a
+    plain browser it falls back to the web sheet by id.
+  </p>
+
+  <button class="demo-btn"
+          data-controller="bridge-sheet"
+          data-bridge-sheet-id-value="bridgeWebFallback"
+          data-bridge-sheet-sections-value='[{"title":"Edit","url":"/edit"},{"title":"Share","url":"/share"},{"title":"Delete","destructive":true,"url":"/delete"}]'
+          data-bridge-sheet-expanded-value="true"
+          data-action="click->bridge-sheet#show">
+    More…
+  </button>
+
+  <p class="tip">Web fallback opens the sheet below. On TurboNative, the click is intercepted and forwarded to the native shell via <code>hotwire-native:bridge</code>.</p>
+
+  <pre class="log" id="log"></pre>
+
+  <div data-controller="sheet" data-sheet-id-value="bridgeWebFallback">
+    <div class="ss-sheet-backdrop" data-sheet-target="backdrop" data-action="click->sheet#close"></div>
+    <div class="ss-sheet" data-sheet-target="sheet">
+      <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+      <div class="ss-sheet-scroll" data-sheet-target="scroll">
+        <div class="ss-section-title">Web fallback</div>
+        <button type="button" class="ss-item" data-action="click->sheet#close">Edit</button>
+        <button type="button" class="ss-item" data-action="click->sheet#close">Share</button>
+        <button type="button" class="ss-item ss-item-destructive" data-action="click->sheet#close">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/stimulus_sheet.js"></script>
+  <script>
+    StimulusSheet.start();
+    document.addEventListener('hotwire-native:bridge', (ev) => {
+      document.getElementById('log').textContent = JSON.stringify(ev.detail, null, 2);
+    });
+  </script>
+</body>
+</html>

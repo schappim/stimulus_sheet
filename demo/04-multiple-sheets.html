@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>04 — Multiple sheets | stimulus_sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="../dist/stimulus_sheet.css" />
+  <link rel="stylesheet" href="_shared.css" />
+</head>
+<body class="phone">
+  <p class="crumbs"><a href="./">← demos</a></p>
+  <h1>04 — Multiple sheets</h1>
+  <p class="lede">Two independent sheets, opened by id. Each owns its own state.</p>
+
+  <div class="row">
+    <button class="demo-btn"
+            data-controller="sheet-trigger"
+            data-sheet-trigger-id-value="filterSheet"
+            data-action="click->sheet-trigger#open">
+      Filter
+    </button>
+    <button class="demo-btn secondary"
+            data-controller="sheet-trigger"
+            data-sheet-trigger-id-value="sortSheet"
+            data-action="click->sheet-trigger#open">
+      Sort
+    </button>
+  </div>
+
+  <div data-controller="sheet" data-sheet-id-value="filterSheet">
+    <div class="ss-sheet-backdrop" data-sheet-target="backdrop" data-action="click->sheet#close"></div>
+    <div class="ss-sheet" data-sheet-target="sheet">
+      <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+      <div class="ss-sheet-scroll" data-sheet-target="scroll">
+        <div class="ss-section-title">Filter</div>
+        <label class="ss-item"><input type="checkbox" /> &nbsp;Show overdue</label>
+        <label class="ss-item"><input type="checkbox" /> &nbsp;Hide cancelled</label>
+        <label class="ss-item"><input type="checkbox" /> &nbsp;Only mine</label>
+        <button type="button" class="ss-item" data-action="click->sheet#close">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div data-controller="sheet" data-sheet-id-value="sortSheet">
+    <div class="ss-sheet-backdrop" data-sheet-target="backdrop" data-action="click->sheet#close"></div>
+    <div class="ss-sheet" data-sheet-target="sheet">
+      <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+      <div class="ss-sheet-scroll" data-sheet-target="scroll">
+        <div class="ss-section-title">Sort by</div>
+        <button type="button" class="ss-item" data-action="click->sheet#close">Newest first</button>
+        <button type="button" class="ss-item" data-action="click->sheet#close">Oldest first</button>
+        <button type="button" class="ss-item" data-action="click->sheet#close">Customer name</button>
+        <button type="button" class="ss-item" data-action="click->sheet#close">Value (high → low)</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/stimulus_sheet.js"></script>
+  <script>StimulusSheet.start();</script>
+</body>
+</html>

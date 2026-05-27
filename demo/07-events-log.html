@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>07 — Events log | stimulus_sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="../dist/stimulus_sheet.css" />
+  <link rel="stylesheet" href="_shared.css" />
+</head>
+<body class="phone">
+  <p class="crumbs"><a href="./">← demos</a></p>
+  <h1>07 — Events log</h1>
+  <p class="lede">Every sheet bubbles <code>sheet:opened</code>, <code>sheet:snap</code>, and <code>sheet:closed</code>.</p>
+
+  <div class="row">
+    <button class="demo-btn"
+            data-controller="sheet-trigger"
+            data-sheet-trigger-id-value="logSheet"
+            data-action="click->sheet-trigger#open">
+      Open
+    </button>
+  </div>
+
+  <pre class="log" id="log"></pre>
+
+  <div data-controller="sheet" data-sheet-id-value="logSheet">
+    <div class="ss-sheet-backdrop" data-sheet-target="backdrop" data-action="click->sheet#close"></div>
+    <div class="ss-sheet" data-sheet-target="sheet">
+      <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+      <div class="ss-sheet-scroll" data-sheet-target="scroll">
+        <div class="ss-section-title">Watch the log</div>
+        <button type="button" class="ss-item" data-action="click->sheet#expand">Snap full</button>
+        <button type="button" class="ss-item" data-action="click->sheet#half">Snap half</button>
+        <button type="button" class="ss-item" data-action="click->sheet#close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/stimulus_sheet.js"></script>
+  <script>
+    StimulusSheet.start();
+    const log = document.getElementById('log');
+    function append(line) {
+      const ts = new Date().toLocaleTimeString();
+      log.textContent += `[${ts}] ${line}\n`;
+      log.scrollTop = log.scrollHeight;
+    }
+    for (const name of ['sheet:opened', 'sheet:snap', 'sheet:closed', 'sheet:connected', 'sheet:disconnected']) {
+      document.addEventListener(name, (ev) => append(`${name} id=${ev.detail.id} state=${ev.detail.state || ''}`));
+    }
+  </script>
+</body>
+</html>

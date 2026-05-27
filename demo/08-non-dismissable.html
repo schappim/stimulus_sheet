@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>08 — Non-dismissable | stimulus_sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="../dist/stimulus_sheet.css" />
+  <link rel="stylesheet" href="_shared.css" />
+</head>
+<body class="phone">
+  <p class="crumbs"><a href="./">← demos</a></p>
+  <h1>08 — Non-dismissable</h1>
+  <p class="lede">
+    Backdrop click is wired (or not) by the host. Drop the
+    <code>data-action="click→sheet#close"</code> from the backdrop and
+    add an explicit Cancel row — the sheet won't dismiss on outside
+    tap.
+  </p>
+
+  <div class="row">
+    <button class="demo-btn"
+            data-controller="sheet-trigger"
+            data-sheet-trigger-id-value="ndSheet"
+            data-sheet-trigger-expanded-value="true"
+            data-action="click->sheet-trigger#open">
+      Open required-confirm
+    </button>
+  </div>
+
+  <div data-controller="sheet" data-sheet-id-value="ndSheet">
+    <!-- No click→sheet#close on the backdrop. -->
+    <div class="ss-sheet-backdrop" data-sheet-target="backdrop"></div>
+    <div class="ss-sheet" data-sheet-target="sheet">
+      <div class="ss-sheet-handle" data-sheet-target="handle"></div>
+      <div class="ss-sheet-scroll" data-sheet-target="scroll">
+        <div class="ss-section-title">Confirm action</div>
+        <p style="color:#6b7280">Tap a button below to dismiss — the backdrop is inert.</p>
+        <button type="button" class="ss-item" data-action="click->sheet#close">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+          Confirm
+        </button>
+        <button type="button" class="ss-item ss-item-destructive" data-action="click->sheet#close">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/stimulus_sheet.js"></script>
+  <script>StimulusSheet.start();</script>
+</body>
+</html>
