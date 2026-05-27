@@ -8,5 +8,10 @@ coverage/
 .env
 .env.local
 
+# Playwright artefacts
+test-results/
+playwright-report/
+playwright/.cache/
+
 # Local Rails scaffold lives outside the repo
 gem/demo/

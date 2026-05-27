@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  js:
+  unit:
     name: JS core — build + unit tests
     runs-on: ubuntu-latest
     steps:
@@ -18,3 +18,31 @@ jobs:
       - run: npm ci
       - run: npm run build:lib
       - run: npm test
+
+  e2e:
+    name: Playwright e2e (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install Playwright browser (${{ matrix.project }}) + deps
+        run: npx playwright install --with-deps ${{ matrix.project }}
+      - name: Build library bundles
+        run: npm run build:lib
+      - name: Run e2e against demo pages
+        run: npx playwright test --project=${{ matrix.project }}
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: playwright-report/
+          retention-days: 7
