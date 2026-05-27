@@ -23,7 +23,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? [['list'], ['github']] : 'list',
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:5179',
     trace: 'on-first-retry',
     viewport: { width: 390, height: 844 },
   },
@@ -39,7 +39,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:5173/demo/',
+    url: 'http://localhost:5179/demo/',
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,
   },

@@ -40,9 +40,14 @@ export default defineConfig({
   },
   server: {
     host: true,
-    port: 5173,
+    // 5179 instead of vite's default 5173 — sibling Stimulus packages
+    // (stimulus_grid, stimulus_kanban, stimulus_calendar) all default to
+    // 5173, so running `npm run dev` here while a sibling is already up
+    // would silently fall through to a higher port and Playwright's
+    // baseURL would miss it. strictPort makes the collision loud.
+    port: 5179,
+    strictPort: true,
     open: false,
-    strictPort: false,
     fs: { allow: [resolve(__dirname, '.')] },
   },
 });
