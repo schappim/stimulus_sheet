@@ -51,10 +51,6 @@ function Q(e) {
     } else
       f = !1;
     t = !0, s = !1, i = n.pointerId, l = n.clientY, k = Date.now(), d = L(e.sheetEl), T = window.innerHeight;
-    try {
-      e.sheetEl.setPointerCapture(n.pointerId);
-    } catch {
-    }
   }
   function O(n) {
     if (!t || i != null && n.pointerId !== i) return;
@@ -68,7 +64,13 @@ function Q(e) {
       if (a > 8) E = !0;
       else return;
     }
-    s || (s = !0, e.sheetEl.style.transition = "none");
+    if (!s) {
+      s = !0, e.sheetEl.style.transition = "none";
+      try {
+        e.sheetEl.setPointerCapture(i);
+      } catch {
+      }
+    }
     let r = d + a;
     if (r < 0 && (r = 0), e.sheetEl.style.transform = `translateY(${r}px)`, e.backdropEl) {
       const p = T * 0.9, m = p - r, g = Math.max(0, Math.min(1, m / p));

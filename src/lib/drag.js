@@ -109,10 +109,15 @@ export function createDrag(host) {
     startTranslateY = currentTranslateY(host.sheetEl);
     winH = window.innerHeight;
 
-    // Try to capture, but tolerate failure (older WKWebViews).
-    try { host.sheetEl.setPointerCapture(ev.pointerId); } catch { /* noop */ }
-
-    // No preventDefault here — we don't know yet if this is a tap.
+    // Do NOT setPointerCapture here. Pointer capture retargets the
+    // subsequent click event from the original tap target to the
+    // captured element, which means a tap on a row inside the sheet
+    // would lose its click and the row's Stimulus action would never
+    // fire. We promote to a captured drag only after confirming the
+    // gesture has crossed the drag threshold (in onPointerMove).
+    //
+    // No preventDefault here either — we don't know yet if this is a
+    // tap or a drag.
   }
 
   function onPointerMove(ev) {
@@ -137,6 +142,12 @@ export function createDrag(host) {
     if (!confirmed) {
       confirmed = true;
       host.sheetEl.style.transition = 'none';
+      // Now that we know it's a drag (not a tap), capture the pointer
+      // so the gesture keeps tracking even when the finger leaves the
+      // sheet. Best-effort: older WKWebViews throw on
+      // setPointerCapture inside an active handler, and we're happy to
+      // continue without capture in that case.
+      try { host.sheetEl.setPointerCapture(pointerId); } catch { /* noop */ }
     }
 
     let newTranslate = startTranslateY + dy;
